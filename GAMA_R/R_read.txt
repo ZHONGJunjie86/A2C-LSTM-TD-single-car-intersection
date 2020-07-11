@@ -1,0 +1,4 @@
+library("reticulate")
+use_condaenv("D:/Anaconda3")
+source_python("D:/Software/PythonWork/GAMA_python/A2C-TD-single-car-intersection/GAMA_R/GAMA_read.py") 
+result <-main()
