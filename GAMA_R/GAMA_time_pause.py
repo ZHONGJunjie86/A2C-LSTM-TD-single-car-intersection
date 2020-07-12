@@ -3,7 +3,7 @@ import os
 #import numpy as np
 
 def main():
-    time.sleep(0.1)   # deadlock
+    time.sleep(0.001)   # deadlock
     return None
 
 if __name__ == '__main__':

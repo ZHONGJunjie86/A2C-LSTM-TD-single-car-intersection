@@ -51,7 +51,7 @@ def send_to_GAMA(to_GAMA):
             error = False
         except(IndexError,FileNotFoundError,ValueError,OSError,PermissionError):  
             error = True 
-            
+
 #[real_speed, target_speed, elapsed_time_ratio, distance_left,reward,done,over]
 def GAMA_connect(test):
     error = True
@@ -70,7 +70,7 @@ def GAMA_connect(test):
     reward = state[4]
     done = state[5]  # time_pass = state[6]
     over = state [6] 
-    print("Recived:",state," done:",done)
+    #print("Recived:",state," done:",done)
     state = np.delete(state, [4,5,6], axis = 0)
     error = True
     while error == True:
