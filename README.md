@@ -1,7 +1,6 @@
 # A2C-LSTM-TD-single-car-intersection
 A model used to identify  the mechanism of usefulness of LSTM with sequential data.
 
-# A2C-TD-single-car-intersection
 　When I noticed the A2C-MC does not convergent, I turned to use the A2C-TD algorithm which the paper used. 
 　It is the MC algorithm can't learn every stuation preciously due to be trained only once in the end of a cycle.  
 　This is a basic model describing a car runs to goal in limited time by using A2C algorithm to determine its acceleration.
