@@ -1,14 +1,18 @@
 # A2C-LSTM-TD-single-car-intersection
-A model used to identify  the mechanism of usefulness of LSTM with sequential data.
+　A model used to identify the usefulness of LSTM with sequential data.
 
-　When I noticed the A2C-MC does not convergent, I turned to use the A2C-TD algorithm which the paper used. 
-　It is the MC algorithm can't learn every stuation preciously due to be trained only once in the end of a cycle.  
-　This is a basic model describing a car runs to goal in limited time by using A2C algorithm to determine its acceleration.
-　Go to see Actor-critic-TD-model from [my previous work](https://github.com/ZHONGJunjie86/A2C-TD-single-car-intersection).    
+　When I noticed neither the A2C-TD nor the A2C-MC can learn sequent data very well, I turned to add the LSTM (a Recurrent Neural Network, RNN）into A2C_TD algorithm.
+　I desire the LSTM can make the algorithm know the relation of the data. 
+　Go to see Actor-critic-TD-model as a contrast from [my previous work](https://github.com/ZHONGJunjie86/A2C-TD-single-car-intersection).    
      　　
    ![image](https://github.com/ZHONGJunjie86/A2C-TD-single-car-intersection/blob/master/illustrate/illustration_1.gif )   
 # Structure
  ![image](https://github.com/ZHONGJunjie86/A2C-LSTM-TD-single-car-intersection/blob/master/result/structure.png)
+# Sequential data
+　Input [real_speed/10, target_speed/10, elapsed_time_ratio, distance_to_goal/100,reward,done,time_pass,over]
+　Station representation: [real_speed/10, target_speed/10, elapsed_time_ratio, distance_to_goal/100]
+ 　It's notable that the data elements have some relation rather than random distribute. 
+  The　target_speed is a constant value and the  elapsed_time_ratio and distance_to_goal are monotonically increasing or monotonically decreasing
 ## Actor-Ctitic + LSTM
  ![image](https://github.com/ZHONGJunjie86/A2C-LSTM-TD-single-car-intersection/blob/master/result/loss_curve_TD_LSTM_lr000700020001.png)
 ## (acceleration > 0 OR acceleration < 0; tanh())
@@ -17,9 +21,6 @@ A model used to identify  the mechanism of usefulness of LSTM with sequential da
 ![image](https://github.com/ZHONGJunjie86/A2C-TD-single-car-intersection/blob/master/illustrate/loss_curve_TD_21.png)
  
 # Reward shaping
-　The work in this model is very simple.   
-　Input [real_speed, target_speed, elapsed_time_ratio, distance_to_goal,reward,done,time_pass,over]
-　Station representation: [real_speed, target_speed, elapsed_time_ratio, distance_to_goal]
 　Output accelerate.
 　Action representation [accelerate].
   
