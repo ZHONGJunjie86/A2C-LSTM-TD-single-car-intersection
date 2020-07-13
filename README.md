@@ -12,7 +12,7 @@
 　Input [real_speed/10, target_speed/10, elapsed_time_ratio, distance_to_goal/100,reward,done,time_pass,over]  
 　Station representation: [real_speed/10, target_speed/10, elapsed_time_ratio, distance_to_goal/100]  
  　It's notable that the data elements have some relation rather than random distribute.   
- 　The　target_speed is a constant value and the  elapsed_time_ratio and distance_to_goal are monotonically increasing or monotonically decreasing
+ 　The　target_speed is a constant value and the  elapsed_time_ratio and distance_to_goal are monotonically increasing or monotonically decreasing data.
   # Reward shaping
 　Output accelerate.
 　Action representation [acceleration].
@@ -27,6 +27,14 @@
 * if sa > st: 0.05 - 0.033*(real_speed / target_speed ) 
 
 　In my experiment it's obviously I desire the agent to learn controling its speed around the target-speed.   
+ # Result
+　It's obvoiusly that the LSTM can be trained much faster than models without LSTM. 
+## Actor-Ctitic + LSTM (acceleration > 0 OR acceleration < 0; tanh())
+ ![image](https://github.com/ZHONGJunjie86/A2C-LSTM-TD-single-car-intersection/blob/master/result/loss_curve_TD_LSTM_lr000700020001.png)
+## (acceleration > 0 OR acceleration < 0; tanh())
+![image](https://github.com/ZHONGJunjie86/A2C-TD-single-car-intersection/blob/master/illustrate/loss_curve_TD_tanh.png)
+## Only speed up (acceleration > 0; sigmoid())
+![image](https://github.com/ZHONGJunjie86/A2C-TD-single-car-intersection/blob/master/illustrate/loss_curve_TD_21.png)
 
   # Experiment
   ###### gama:
@@ -42,12 +50,6 @@
 #### The model will be trained every step(TD). 
 
 　<a href="https://www.codecogs.com/eqnedit.php?latex=\bigtriangledown&space;R&space;=&space;\frac{1}{N}\sum_{n=1}^{N}\sum_{t=1}^{T}(r_{t}&plus;V_{s&plus;1}^{n}-V_{s}^{n})\bigtriangledown&space;log&space;P_{\Theta&space;}(a_{t}^{n}|s_{t}^{n})" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\bigtriangledown&space;R&space;=&space;\frac{1}{N}\sum_{n=1}^{N}\sum_{t=1}^{T}(r_{t}&plus;V_{s&plus;1}^{n}-V_{s}^{n})\bigtriangledown&space;log&space;P_{\Theta&space;}(a_{t}^{n}|s_{t}^{n})" title="\bigtriangledown R = \frac{1}{N}\sum_{n=1}^{N}\sum_{t=1}^{T}(r_{t}+V_{s+1}^{n}-V_{s}^{n})\bigtriangledown log P_{\Theta }(a_{t}^{n}|s_{t}^{n})" /></a>
-## Actor-Ctitic + LSTM (acceleration > 0 OR acceleration < 0; tanh())
- ![image](https://github.com/ZHONGJunjie86/A2C-LSTM-TD-single-car-intersection/blob/master/result/loss_curve_TD_LSTM_lr000700020001.png)
-## (acceleration > 0 OR acceleration < 0; tanh())
-![image](https://github.com/ZHONGJunjie86/A2C-TD-single-car-intersection/blob/master/illustrate/loss_curve_TD_tanh.png)
-## Only speed up (acceleration > 0; sigmoid())
-![image](https://github.com/ZHONGJunjie86/A2C-TD-single-car-intersection/blob/master/illustrate/loss_curve_TD_21.png)
  ## Learning rate weakened
             lr = 0.0007  
             if episode > 50 : 
