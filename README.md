@@ -9,20 +9,13 @@
 # Structure
  ![image](https://github.com/ZHONGJunjie86/A2C-LSTM-TD-single-car-intersection/blob/master/result/structure.png)
 # Sequential data
-　Input [real_speed/10, target_speed/10, elapsed_time_ratio, distance_to_goal/100,reward,done,time_pass,over]
-　Station representation: [real_speed/10, target_speed/10, elapsed_time_ratio, distance_to_goal/100]
- 　It's notable that the data elements have some relation rather than random distribute. 
-  The　target_speed is a constant value and the  elapsed_time_ratio and distance_to_goal are monotonically increasing or monotonically decreasing
-## Actor-Ctitic + LSTM
- ![image](https://github.com/ZHONGJunjie86/A2C-LSTM-TD-single-car-intersection/blob/master/result/loss_curve_TD_LSTM_lr000700020001.png)
-## (acceleration > 0 OR acceleration < 0; tanh())
-![image](https://github.com/ZHONGJunjie86/A2C-TD-single-car-intersection/blob/master/illustrate/loss_curve_TD_tanh.png)
-## Only speed up (acceleration > 0; sigmoid())
-![image](https://github.com/ZHONGJunjie86/A2C-TD-single-car-intersection/blob/master/illustrate/loss_curve_TD_21.png)
- 
-# Reward shaping
+　Input [real_speed/10, target_speed/10, elapsed_time_ratio, distance_to_goal/100,reward,done,time_pass,over]  
+　Station representation: [real_speed/10, target_speed/10, elapsed_time_ratio, distance_to_goal/100]  
+ 　It's notable that the data elements have some relation rather than random distribute.   
+ 　The　target_speed is a constant value and the  elapsed_time_ratio and distance_to_goal are monotonically increasing or monotonically decreasing
+  # Reward shaping
 　Output accelerate.
-　Action representation [accelerate].
+　Action representation [acceleration].
   
 　The car will learn to control its accelerate with the restructions shown below:  
 　Reward shaping:  
@@ -49,6 +42,21 @@
 #### The model will be trained every step(TD). 
 
 　<a href="https://www.codecogs.com/eqnedit.php?latex=\bigtriangledown&space;R&space;=&space;\frac{1}{N}\sum_{n=1}^{N}\sum_{t=1}^{T}(r_{t}&plus;V_{s&plus;1}^{n}-V_{s}^{n})\bigtriangledown&space;log&space;P_{\Theta&space;}(a_{t}^{n}|s_{t}^{n})" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\bigtriangledown&space;R&space;=&space;\frac{1}{N}\sum_{n=1}^{N}\sum_{t=1}^{T}(r_{t}&plus;V_{s&plus;1}^{n}-V_{s}^{n})\bigtriangledown&space;log&space;P_{\Theta&space;}(a_{t}^{n}|s_{t}^{n})" title="\bigtriangledown R = \frac{1}{N}\sum_{n=1}^{N}\sum_{t=1}^{T}(r_{t}+V_{s+1}^{n}-V_{s}^{n})\bigtriangledown log P_{\Theta }(a_{t}^{n}|s_{t}^{n})" /></a>
+## Actor-Ctitic + LSTM (acceleration > 0 OR acceleration < 0; tanh())
+ ![image](https://github.com/ZHONGJunjie86/A2C-LSTM-TD-single-car-intersection/blob/master/result/loss_curve_TD_LSTM_lr000700020001.png)
+## (acceleration > 0 OR acceleration < 0; tanh())
+![image](https://github.com/ZHONGJunjie86/A2C-TD-single-car-intersection/blob/master/illustrate/loss_curve_TD_tanh.png)
+## Only speed up (acceleration > 0; sigmoid())
+![image](https://github.com/ZHONGJunjie86/A2C-TD-single-car-intersection/blob/master/illustrate/loss_curve_TD_21.png)
+ ## Learning rate weakened
+            lr = 0.0007  
+            if episode > 50 : 
+                if episode > 135:
+                    lr = 0.0002
+                new_lr = lr * (0.94 ** ((episode-40) // 10)) 
+                optimizerA = optim.Adam(actor.parameters(), new_lr, betas=(0.95, 0.999))
+                optimizerC = optim.Adam(critic.parameters(), new_lr, betas=(0.95, 0.999))
+
 # Hyperparameter optimization
 　Station representation: [real_speed, target_speed, elapsed_time_ratio, distance_to_goal]  
 　Action representation [accelerate].
@@ -73,22 +81,7 @@
 　SO the station representation is [real_speed/10, target_speed/10, elapsed_time_ratio, distance_left/100].
 　And the action representation is [accelerate*10].
 　In this way, the loss will not violently oscillate and the image of learning curve will be more cognizable.
-## Learning rate weakened
-            if episode > 50 : 
-                new_lr = lr * (0.94 ** ((episode-40) // 10)) 
-                optimizerA = optim.Adam(actor.parameters(), new_lr, betas=(0.95, 0.999))
-                optimizerC = optim.Adam(critic.parameters(), new_lr, betas=(0.95, 0.999))
 
- ## Final result
-　The TD algorithm convergents within 800 cycles.  
-## (acceleration > 0 OR acceleration < 0; tanh())
-![image](https://github.com/ZHONGJunjie86/A2C-TD-single-car-intersection/blob/master/illustrate/loss_curve_TD_tanh.png)
-## Only speed up (acceleration > 0; sigmoid())
-![image](https://github.com/ZHONGJunjie86/A2C-TD-single-car-intersection/blob/master/illustrate/loss_curve_TD_21.png)
-## Learning rate isn't weakened
-![image](https://github.com/ZHONGJunjie86/A2C-TD-single-car-intersection/blob/master/illustrate/loss_curve_TD_20_%E5%AD%A6%E4%B9%A0%E7%8E%870-001%E7%A8%B3%E5%AE%9A%E4%B8%8D%E6%94%B6%E6%95%9B.png)
-## Learning rate is weakened too late
-![image](https://github.com/ZHONGJunjie86/A2C-TD-single-car-intersection/blob/master/illustrate/loss_curve_TD_19_lr%E5%87%8F%E5%BE%97%E5%A4%AA%E6%85%A2%EF%BC%9F.png)
 
 # About GAMA
 　The GAMA is a platefrom to do simulations.      
