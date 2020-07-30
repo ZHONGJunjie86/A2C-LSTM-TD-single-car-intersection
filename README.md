@@ -78,7 +78,7 @@
 　-0.013(target_speed > real_speed) or  -0.01(target_speed < real_speed)：crash / time expires 
 　The formost issue is acceleration, so the value of over time penalty should much smaller than the value of reward-speed.
 　The reason 0.013>0.01 is that lower speeds lead to  over time more likely.
-## Input's and output's values should not be too different 
+## Input's and output's values should not be too different (normalization)
 　In fact the values sent from the GAMA side is [real_speed/10, target_speed/10, elapsed_time_ratio, distance_left/100,reward,done,over].
 　SO the station representation is [real_speed/10, target_speed/10, elapsed_time_ratio, distance_left/100].
 　And the action representation is [accelerate*10].
